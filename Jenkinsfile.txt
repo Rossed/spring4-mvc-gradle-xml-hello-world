@@ -1,0 +1,77 @@
+pipeline {
+    agent any
+
+    parameters {
+            string(name: 'Username', defaultValue: 'Ross', description: 'Who is running the build')
+            choice(
+            // choices are a string of newline separated values
+            // https://issues.jenkins-ci.org/browse/JENKINS-41180
+            choices: 'TDN Int\nDRN',
+            description: '',
+            name: 'Environment')
+        }
+    stages {    
+        stage('Build to TDN Int') {
+            when {
+                expression { params.Environment == "TDN Int" }
+            }
+            steps {
+                echo "Hello ${params.Username}, we are building $BUILD_TAG"
+                sh './gradlew build'
+            }
+            post {
+                success {
+                    echo "$BUILD_TAG SUCCESSFULLY BUILT"
+                }
+                failure {
+                    echo "FAILURE IN BUILD $BUILD_TAG"
+                }
+            }
+        }
+        stage('Build to DRN') {
+            when {
+                expression { params.Environment == "DRN" }
+            }
+            steps {
+                echo "Hello ${params.Username}, we are building $BUILD_TAG to DRN"
+                sh './gradlew build'
+            }
+            post {
+                success {
+                    echo "$BUILD_TAG SUCCESSFULLY BUILT"
+                }
+                failure {
+                    echo "FAILURE IN BUILD $BUILD_TAG"
+                }
+            }
+        }
+        stage('Test') {
+            steps {
+                parallel (
+                    'test 1': {
+                        echo "running $BUILD_TAG"
+                        sh './gradlew run --info'
+                    },
+                    'test 2': {
+                        echo 'running test 2'
+                    }
+                )
+            }
+            post {
+                failure {
+                    echo "FAILURE WHEN RUNNING BUILD $BUILD_TAG"
+                }
+            }
+        }
+        stage('Deploy') {
+            steps {
+                echo "Deploying $BUILD_TAG"
+            }
+            post {
+                failure {
+                    echo "FAILURE IN DEPLOYMENT OF $BUILD_TAG"
+                }
+            }
+        }
+    }
+}
