@@ -26,7 +26,7 @@ pipeline {
                 parallel (
                     'Deploy 1': {
                         echo "Deploying $BUILD_TAG on Jetty"
-                        sh './gradle jettyRunWar &'
+                        sh './gradlew jettyRunWar &'
                     },
                     'Deploy 2': {
                         echo 'Deploy 2 ...'
@@ -51,11 +51,12 @@ pipeline {
         }
         stage('Exit') {
             steps {
+                echo "Stopping Jetty deployment"
                 sh 'gradle jettyStop'
             }
             post {
                 failure {
-                    echo "FAILURE IN DEPLOYMENT OF $BUILD_TAG"
+                    echo "FAILURE IN EXITING $BUILD_TAG"
                 }
             }
         }
