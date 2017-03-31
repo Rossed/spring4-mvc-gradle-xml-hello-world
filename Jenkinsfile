@@ -51,8 +51,8 @@ pipeline {
         }
         stage('Exit') {
             steps {
-                echo "Stopping Jetty deployment"
-                sh 'gradle jettyStop'
+                echo "Stopping Jetty deploymen"
+                sh './gradlew jettyStop'
             }
             post {
                 failure {
