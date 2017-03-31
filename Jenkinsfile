@@ -4,17 +4,8 @@ pipeline {
     parameters {
             string(name: 'Username', defaultValue: 'Ross', description: 'Who is running the build')
             choice(
-            // choices are a string of newline separated values
-            // https://issues.jenkins-ci.org/browse/JENKINS-41180
-            choices: 'TDN Int\nDRN',
-            description: '',
-            name: 'Environment')
         }
     stages {    
-        stage('Build to TDN Int') {
-            when {
-                expression { params.Environment == "TDN Int" }
-            }
             steps {
                 echo "Hello ${params.Username}, we are building $BUILD_TAG"
                 sh 'pwd'
@@ -29,32 +20,15 @@ pipeline {
                 }
             }
         }
-        stage('Build to DRN') {
-            when {
-                expression { params.Environment == "DRN" }
-            }
-            steps {
-                echo "Hello ${params.Username}, we are building $BUILD_TAG to DRN"
-                sh './gradlew build'
-            }
-            post {
-                success {
-                    echo "$BUILD_TAG SUCCESSFULLY BUILT"
-                }
-                failure {
-                    echo "FAILURE IN BUILD $BUILD_TAG"
-                }
-            }
-        }
-        stage('Test') {
+        stage('Deploy to Jetty') {
             steps {
                 parallel (
-                    'test 1': {
-                        echo "running $BUILD_TAG"
+                    'Deploy 1': {
+                        echo "Deploying $BUILD_TAG on Jetty"
                         sh 'gradle jettyRun'
                     },
-                    'test 2': {
-                        echo 'running test 2'
+                    'Deploy 2': {
+                        echo 'Deploy 2 ...'
                     }
                 )
             }
@@ -64,9 +38,9 @@ pipeline {
                 }
             }
         }
-        stage('Deploy') {
+        stage('Test') {
             steps {
-                echo "Deploying $BUILD_TAG"
+                echo "Testing $BUILD_TAG"
             }
             post {
                 failure {
