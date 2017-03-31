@@ -35,7 +35,7 @@ pipeline {
             }
             steps {
                 echo "Hello ${params.Username}, we are building $BUILD_TAG to DRN"
-                sh 'gradle jettyRun'
+                sh './gradlew build'
             }
             post {
                 success {
@@ -51,7 +51,7 @@ pipeline {
                 parallel (
                     'test 1': {
                         echo "running $BUILD_TAG"
-                        sh './gradlew run --info'
+                        sh 'gradle jettyRun'
                     },
                     'test 2': {
                         echo 'running test 2'
