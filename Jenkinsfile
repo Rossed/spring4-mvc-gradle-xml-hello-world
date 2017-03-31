@@ -20,32 +20,31 @@ pipeline {
                 }
             }
         }
-        stage('Deploy to Jetty') {
-            steps {
-                parallel (
-                    'Deploy 1': {
-                        echo "Deploying $BUILD_TAG on Jetty"
-                        sh 'gradle jettyRun'
-                    },
-                    'Deploy 2': {
-                        echo 'Deploy 2 ...'
-                    }
-                )
-            }
-            post {
-                failure {
-                    echo "FAILURE WHEN RUNNING BUILD $BUILD_TAG"
+    stage('Deploy to Jetty') {
+        steps {
+            parallel (
+                'Deploy 1': {
+                    echo "Deploying $BUILD_TAG on Jetty"
+                    sh 'gradle jettyRun'
+                },
+                'Deploy 2': {
+                    echo 'Deploy 2 ...'
                 }
+            )
+        }
+        post {
+            failure {
+                echo "FAILURE WHEN RUNNING BUILD $BUILD_TAG"
             }
         }
-        stage('Test') {
-            steps {
-                echo "Testing $BUILD_TAG"
-            }
-            post {
-                failure {
-                    echo "FAILURE IN DEPLOYMENT OF $BUILD_TAG"
-                }
+    }
+    stage('Test') {
+        steps {
+            echo "Testing $BUILD_TAG"
+        }
+        post {
+            failure {
+                echo "FAILURE IN DEPLOYMENT OF $BUILD_TAG"
             }
         }
     }
