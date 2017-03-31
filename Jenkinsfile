@@ -5,7 +5,7 @@ pipeline {
             string(name: 'Username', defaultValue: 'Ross', description: 'Who is running the build')
         }
     stages {    
-            steps {
+            steps ('Build'){
                 echo "Hello ${params.Username}, we are building $BUILD_TAG"
                 sh 'pwd'
                 sh './gradlew build'
