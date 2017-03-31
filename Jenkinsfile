@@ -17,7 +17,7 @@ pipeline {
             }
             steps {
                 echo "Hello ${params.Username}, we are building $BUILD_TAG"
-                pwd
+                sh 'pwd > workspace'
                 sh './gradlew build'
             }
             post {
