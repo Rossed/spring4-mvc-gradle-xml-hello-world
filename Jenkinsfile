@@ -3,7 +3,6 @@ pipeline {
 
     parameters {
             string(name: 'Username', defaultValue: 'Ross', description: 'Who is running the build')
-            choice(
         }
     stages {    
             steps {
