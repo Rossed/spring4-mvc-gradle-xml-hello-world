@@ -35,7 +35,7 @@ pipeline {
             }
             steps {
                 echo "Hello ${params.Username}, we are building $BUILD_TAG to DRN"
-                sh './gradlew build'
+                sh 'gradle jettyRun'
             }
             post {
                 success {
