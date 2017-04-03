@@ -8,6 +8,7 @@ pipeline {
         stage('Build') { 
                 steps {
                     echo "Hello ${params.Username}, we are building $BUILD_TAG"
+                    echo "Building to $BUILD_URL"
                     // Builds and excludes tests
                     sh './gradlew clean build -x test'
                 }
