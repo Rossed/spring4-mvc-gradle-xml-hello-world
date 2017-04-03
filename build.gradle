@@ -40,6 +40,11 @@ clean.doFirst {
     delete '/Users/rossedwa/Documents/Programs/apache-tomcat-8.5.12/webapps/spring4-mvc-gradle-xml-hello-world.war', '/Users/rossedwa/Documents/Programs/apache-tomcat-8.5.12/webapps/spring4-mvc-gradle-xml-hello-world'
     println "deleting: " + '/Users/rossedwa/Documents/Programs/apache-tomcat-8.5.12/webapps/spring4-mvc-gradle-xml-hello-world.war' + " and " + '/Users/rossedwa/Documents/Programs/apache-tomcat-8.5.12/webapps/spring4-mvc-gradle-xml-hello-world' + ' folder'
 }
+test.doFirst {
+	tasks.stopTomcat.execute()
+	tasks.startTomcat.execute()
+	tasks.deployToTomcat.execute()
+}
 
 task cleanTomcatWebapps() {
 	delete '/Users/rossedwa/Documents/Programs/apache-tomcat-8.5.12/webapps/spring4-mvc-gradle-xml-hello-world.war', '/Users/rossedwa/Documents/Programs/apache-tomcat-8.5.12/webapps/spring4-mvc-gradle-xml-hello-world'

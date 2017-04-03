@@ -40,6 +40,7 @@ import static org.junit.Assert.assertEquals;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.concurrent.TimeUnit;
 
 @RunWith(BlockJUnit4ClassRunner.class)
 public class ChromeTest extends TestCase {
@@ -74,10 +75,11 @@ public class ChromeTest extends TestCase {
 
 	  @Test
 	  public void testGoogleSearch() {
+		  driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
 		  driver.get("http://localhost:9999/spring4-mvc-gradle-xml-hello-world/");
 	    // rest of the test...
 		  WebElement nameInputField = driver.findElement(By.id("titlename"));
-		  assertEquals(nameInputField, "Hello world");
+		  assertEquals("Hello World", nameInputField.getText());
 		 
 	  }
 
