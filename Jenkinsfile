@@ -8,9 +8,8 @@ pipeline {
         stage('Build') { 
                 steps {
                     echo "Hello ${params.Username}, we are building $BUILD_TAG"
-                    sh 'pwd'
                     // Builds and excludes tests
-                    sh './gradlew build -x test'
+                    sh './gradlew clean build -x test'
                 }
                 post {
                     success {
@@ -21,12 +20,18 @@ pipeline {
                     }
                 }
             }
-        stage('Deploy to Jetty') {
+        stage('Start tomcat server') {
+            steps {
+                echo "Starting tomcat server"
+                sh './gradlew startTomcat'
+            }
+        }
+        stage('Deploy to Tomcat') {
             steps {
                 parallel (
                     'Deploy 1': {
-                        echo "Deploying $BUILD_TAG on Jetty"
-                        sh './gradlew jettyRunWar &'
+                        echo "Deploying $BUILD_TAG on Tomcat"
+                        sh './gradlew deployToTomcat'
                     },
                     'Deploy 2': {
                         echo 'Deploy 2 ...'
@@ -51,8 +56,8 @@ pipeline {
         }
         stage('Exit') {
             steps {
-                echo "Stopping Jetty deploymen"
-                sh './gradlew jettyStop'
+                echo "Stopping Tomcat Server"
+                sh './gradlew stopTomcat'
             }
             post {
                 failure {

@@ -1,7 +1,15 @@
 apply plugin: 'java'
 apply plugin: 'war'
 apply plugin: 'eclipse-wtp'
-apply plugin: 'jetty'
+// apply plugin: 'org.akhikhl.gretty'
+
+def tomcat_home = '/Users/rossedwa/Documents/Programs/apache-tomcat-8.5.12'
+def tomcat_bin = tomcat_home + '/bin'
+def tomcat_start = tomcat_bin + '/startup.sh'
+def tomcat_stop = tomcat_bin + '/shutdown.sh'
+def tomcat_webapps = tomcat_home + '/webapps'
+def app_dir = '/Users/rossedwa/Documents/Learning/Gradle/spring4-mvc-gradle-xml-hello-world'
+def war_location = app_dir + '/build/libs/'
 
 // JDK 8
 sourceCompatibility = 1.8
@@ -23,19 +31,45 @@ dependencies {
 	
 }
 
-// Embeded Jetty for testing
-jettyRun{
-	contextPath = "spring4"
-	httpPort = 9090
+clean.doFirst {
+    delete '/Users/rossedwa/Documents/Programs/apache-tomcat-8.5.12/webapps/spring4-mvc-gradle-xml-hello-world.war', '/Users/rossedwa/Documents/Programs/apache-tomcat-8.5.12/webapps/spring4-mvc-gradle-xml-hello-world'
+    println "deleting: " + '/Users/rossedwa/Documents/Programs/apache-tomcat-8.5.12/webapps/spring4-mvc-gradle-xml-hello-world.war' + " and " + '/Users/rossedwa/Documents/Programs/apache-tomcat-8.5.12/webapps/spring4-mvc-gradle-xml-hello-world' + 'folder'
 }
 
-jettyRunWar{
-	contextPath = "spring4"
-	httpPort = 9090
+task deployToTomcat(type: Copy) {
+    from war_location
+    into tomcat_webapps
 }
 
-stopPort = 9080
-stopKey = "stopKey"
+task startTomcat(type:Exec) {
+	println 'Starting tomcat...'
+	workingDir tomcat_bin
+	commandLine './startup.sh'
+}
+
+task stopTomcat(type:Exec) {
+	println 'Stopping tomcat...'
+	workingDir tomcat_bin
+	commandLine './shutdown.sh'
+}
+
+// //Gretty
+// buildscript {
+//   repositories {
+//     jcenter()
+//   }
+
+//   dependencies {
+//     classpath 'org.akhikhl.gretty:gretty:+'
+//   }
+// }
+
+// gretty {
+//   httpPort = 9090
+//   contextPath = 'spring4'
+//   servletContainer = 'jetty9'
+// }
+
 
 //For Eclipse IDE only
 eclipse {
