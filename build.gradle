@@ -50,6 +50,7 @@ task cleanTomcatWebapps(type:Exec) {
 
 
 task deployToTomcat(type: Copy) {
+	println 'Deploying...'
 	from war_location
     into tomcat_webapps
 }

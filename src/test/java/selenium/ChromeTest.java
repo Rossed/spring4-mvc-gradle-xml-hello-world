@@ -97,7 +97,5 @@ public class ChromeTest extends TestCase {
 		  driver.get("http://localhost:9999/spring4-mvc-gradle-xml-hello-world/hello/ross");
 		  WebElement nameInputField = driver.findElement(By.id("titlename"));
 		  assertEquals("Hello ross", nameInputField.getText());
-	  }
-
-	
+	  }	
 }
