@@ -50,10 +50,8 @@ task cleanTomcatWebapps(type:Exec) {
 
 
 task deployToTomcat(type: Copy) {
-	doFirst {
-	    from war_location
-	    into tomcat_webapps
-	}
+	from war_location
+    into tomcat_webapps
 }
 
 task startTomcat(type:Exec) {
