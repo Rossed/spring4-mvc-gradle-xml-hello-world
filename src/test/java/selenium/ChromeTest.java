@@ -15,6 +15,9 @@ import org.openqa.selenium.remote.RemoteWebDriver;
 
 import junit.framework.TestCase;
 
+import static org.hamcrest.CoreMatchers.anyOf;
+import static org.hamcrest.CoreMatchers.is;
+
 //public class FirstTestCase {
 //	 
 //	public static void main(String[] args) throws InterruptedException {
@@ -37,9 +40,11 @@ import junit.framework.TestCase;
 //}
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertThat;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 @RunWith(BlockJUnit4ClassRunner.class)
@@ -80,6 +85,11 @@ public class ChromeTest extends TestCase {
 	    // rest of the test...
 		  WebElement nameInputField = driver.findElement(By.id("titlename"));
 		  assertEquals("Hello World", nameInputField.getText());
+		  List<WebElement> btnField = driver.findElements(By.className("btn"));
+		  for (WebElement we : btnField) {
+			  System.out.println(we.getText());
+			  assertThat(we.getText(), anyOf(is("Learn more"), is("View details")));
+		  }
 		 
 	  }
 
