@@ -31,7 +31,7 @@ pipeline {
                 parallel (
                     'Deploy to Tomcat': {
                         echo "Deploying $BUILD_TAG on Tomcat"
-                        sh './gradlew deployToTomcatt'
+                        sh './gradlew deployToTomcat'
                     },
                     'Deploy 2': {
                         echo 'Deploy 2 ...'
