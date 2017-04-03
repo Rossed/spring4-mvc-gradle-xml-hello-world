@@ -79,18 +79,24 @@ public class ChromeTest extends TestCase {
 	  }
 
 	  @Test
-	  public void testGoogleSearch() {
+	  public void testFirstPage() {
 		  driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
 		  driver.get("http://localhost:9999/spring4-mvc-gradle-xml-hello-world/");
-	    // rest of the test...
+		  // Check correct Header
 		  WebElement nameInputField = driver.findElement(By.id("titlename"));
 		  assertEquals("Hello World", nameInputField.getText());
+		  //Check btns are correct
 		  List<WebElement> btnField = driver.findElements(By.className("btn"));
 		  for (WebElement we : btnField) {
-			  System.out.println(we.getText());
 			  assertThat(we.getText(), anyOf(is("Learn more"), is("View details")));
 		  }
-		 
+	  }
+	  @Test
+	  public void testHelloMsg() {
+		  driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
+		  driver.get("http://localhost:9999/spring4-mvc-gradle-xml-hello-world/hello/ross");
+		  WebElement nameInputField = driver.findElement(By.id("titlename"));
+		  assertEquals("Hello ross", nameInputField.getText());
 	  }
 
 	

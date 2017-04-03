@@ -40,38 +40,36 @@ clean.doFirst {
     delete '/Users/rossedwa/Documents/Programs/apache-tomcat-8.5.12/webapps/spring4-mvc-gradle-xml-hello-world.war', '/Users/rossedwa/Documents/Programs/apache-tomcat-8.5.12/webapps/spring4-mvc-gradle-xml-hello-world'
     println "deleting: " + '/Users/rossedwa/Documents/Programs/apache-tomcat-8.5.12/webapps/spring4-mvc-gradle-xml-hello-world.war' + " and " + '/Users/rossedwa/Documents/Programs/apache-tomcat-8.5.12/webapps/spring4-mvc-gradle-xml-hello-world' + ' folder'
 }
-test.doFirst {
-	tasks.stopTomcat.execute()
-	tasks.startTomcat.execute()
-	tasks.deployToTomcat.execute()
+
+task cleanTomcatWebapps(type:Exec) {
+	doFirst {
+		delete '/Users/rossedwa/Documents/Programs/apache-tomcat-8.5.12/webapps/spring4-mvc-gradle-xml-hello-world.war', '/Users/rossedwa/Documents/Programs/apache-tomcat-8.5.12/webapps/spring4-mvc-gradle-xml-hello-world'
+	    println "deleting: " + '/Users/rossedwa/Documents/Programs/apache-tomcat-8.5.12/webapps/spring4-mvc-gradle-xml-hello-world.war' + " and " + '/Users/rossedwa/Documents/Programs/apache-tomcat-8.5.12/webapps/spring4-mvc-gradle-xml-hello-world' + ' folder'
+	}
 }
 
-task cleanTomcatWebapps() {
-	delete '/Users/rossedwa/Documents/Programs/apache-tomcat-8.5.12/webapps/spring4-mvc-gradle-xml-hello-world.war', '/Users/rossedwa/Documents/Programs/apache-tomcat-8.5.12/webapps/spring4-mvc-gradle-xml-hello-world'
-    println "deleting: " + '/Users/rossedwa/Documents/Programs/apache-tomcat-8.5.12/webapps/spring4-mvc-gradle-xml-hello-world.war' + " and " + '/Users/rossedwa/Documents/Programs/apache-tomcat-8.5.12/webapps/spring4-mvc-gradle-xml-hello-world' + ' folder'
-}
 
 task deployToTomcat(type: Copy) {
-    from war_location
-    into tomcat_webapps
+	doFirst {
+	    from war_location
+	    into tomcat_webapps
+	}
 }
 
 task startTomcat(type:Exec) {
-	workingDir tomcat_bin
-	commandLine './startup.sh'
-}
-
-startTomcat.doFirst {
-	println 'Starting tomcat...'
+	doFirst {
+		println 'Starting tomcat...'
+		workingDir tomcat_bin
+		commandLine './startup.sh'
+	}
 }
 
 task stopTomcat(type:Exec) {
-	workingDir tomcat_bin
-	commandLine './shutdown.sh'
-}
-
-stopTomcat.doFirst {
-	println 'Stopping tomcat...'
+	doFirst {
+		println 'Stopping tomcat...'
+		workingDir tomcat_bin
+		commandLine './shutdown.sh'
+	}
 }
 
 //For Eclipse IDE only
