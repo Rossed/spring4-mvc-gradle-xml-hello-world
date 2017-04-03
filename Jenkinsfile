@@ -58,6 +58,7 @@ pipeline {
             steps {
                 echo "Stopping Tomcat Server"
                 sh './gradlew stopTomcat'
+                sh './gradlew cleanTomcatWebapps'
             }
             post {
                 failure {
