@@ -50,9 +50,11 @@ task cleanTomcatWebapps(type:Exec) {
 
 
 task deployToTomcat(type: Copy) {
-	println 'Deploying...'
-	from war_location
-    into tomcat_webapps
+	doFirst {
+		println 'Deploying...'
+	}
+	from '/Users/rossedwa/Documents/Learning/Gradle/spring4-mvc-gradle-xml-hello-world/build/libs/'
+    into '/Users/rossedwa/Documents/Programs/apache-tomcat-8.5.12/webapps'
 }
 
 task startTomcat(type:Exec) {
