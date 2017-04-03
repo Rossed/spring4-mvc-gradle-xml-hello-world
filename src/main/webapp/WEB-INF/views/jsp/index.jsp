@@ -21,7 +21,7 @@
 
 <div class="jumbotron">
 	<div class="container">
-		<h1>${title}</h1>
+		<h1 id="titlename">${title}</h1>
 		<p>
 			<c:if test="${not empty msg}">
 				Hello ${msg}

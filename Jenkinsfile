@@ -26,10 +26,10 @@ pipeline {
                 sh './gradlew startTomcat'
             }
         }
-        stage('Deploy to Tomcat') {
+        stage('Deploy') {
             steps {
                 parallel (
-                    'Deploy 1': {
+                    'Deploy to Tomcat': {
                         echo "Deploying $BUILD_TAG on Tomcat"
                         sh './gradlew deployToTomcat'
                     },
@@ -47,6 +47,7 @@ pipeline {
         stage('Test') {
             steps {
                 echo "Testing $BUILD_TAG"
+                sh './gradlew test'
             }
             post {
                 failure {
